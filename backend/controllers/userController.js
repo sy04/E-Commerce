@@ -8,7 +8,9 @@ const cloudinary = require("cloudinary")
 
 // Register User
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
+    const publicId = Math.random().toString(36).substr(2, 10)
     const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+        public_id: `${publicId}${publicId}`,
         folder: "avatars",
         width: 150,
         crop: "scale"
@@ -179,10 +181,12 @@ exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
     if(req.body.avatar !== ""){
         const user = await User.findById(req.user.id)
         const imageId = user.avatar.public_id
+        const publicId = Math.random().toString(36).substr(2, 10)
 
         await cloudinary.v2.uploader.destroy(imageId)
 
         const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+            public_id: `${publicId}${publicId}`,
             folder: "avatars",
             width: 150,
             crop: "scale"

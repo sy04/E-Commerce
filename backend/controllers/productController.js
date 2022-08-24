@@ -15,9 +15,12 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
         images = req.body.images
     }
   
+
+    const publicId = Math.random().toString(36).substr(2, 10)
     const imagesLinks = [] 
     for (let i = 0; i < images.length; i++) {
         const result = await cloudinary.v2.uploader.upload(images[i], {
+            public_id: `${publicId}${publicId}`,
             folder: "products"
         })
   
@@ -113,9 +116,11 @@ exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
             await cloudinary.v2.uploader.destroy(product.images[i].public_id)
         }
 
+        const publicId = Math.random().toString(36).substr(2, 10)
         const imagesLinks = [] 
         for (let i = 0; i < images.length; i++) {
             const result = await cloudinary.v2.uploader.upload(images[i], {
+                public_id: `${publicId}${publicId}`,
                 folder: "products"
             })
     
